@@ -7,7 +7,7 @@ const routes = [
   { path: '/', component: () => import('../pages/Dashboard.vue'), meta: { requiresAuth: true } },
   { path: '/profile', component: () => import('../pages/Profile.vue'), meta: { requiresAuth: true } },
   { path: '/issue', component: () => import('../pages/Issue.vue'), meta: { requiresAuth: true } },
-//   { path: '/redeem', component: () => import('../pages/Redeem.vue'), meta: { requiresAuth: true } },
+  { path: '/redeem', component: () => import('../pages/Redeem.vue'), meta: { requiresAuth: true } },
 //   { path: '/split', component: () => import('../pages/Split.vue'), meta: { requiresAuth: true } },
 //   { path: '/void', component: () => import('../pages/Void.vue'), meta: { requiresAuth: true } },
 ];
