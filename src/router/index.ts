@@ -3,7 +3,7 @@ import { useAuthStore } from '../stores/useAuthStore';
 
 const routes = [
   { path: '/login', component: () => import('../pages/Login.vue') },
-//   { path: '/register', component: () => import('../pages/Register.vue') },
+  { path: '/register', component: () => import('../pages/Register.vue') },
   // { path: '/', component: () => import('../pages/Dashboard.vue'), meta: { requiresAuth: true } },
 //   { path: '/profile', component: () => import('../pages/Profile.vue'), meta: { requiresAuth: true } },
 //   { path: '/issue', component: () => import('../pages/Issue.vue'), meta: { requiresAuth: true } },
