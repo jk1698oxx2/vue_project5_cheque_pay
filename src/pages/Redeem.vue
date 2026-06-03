@@ -61,16 +61,22 @@ const loadCheque = async (id: string) => {
 const verifyCheque = async () => {
   if (!cheque.value) return;
   loading.value = true;
+  resultMsg.value = '';
+  errorMsg.value = '';
+  
   try {
     const res = await http.post(`/clearing/verify?chequeId=${cheque.value.id}`);
-    if (res.data.valid) {
-      resultMsg.value = '✅ Cheque verified successfully!';
-      errorMsg.value = '';
+    
+    if (res.data.success) {
+      resultMsg.value = `✅ ${res.data.message || 'Cheque verified successfully!'}`;
     } else {
-      errorMsg.value = '❌ Verification failed';
+      errorMsg.value = `❌ ${res.data.message || 'Verification failed'}`;
     }
-  } catch {
-    errorMsg.value = '❌ Verification error';
+  } catch (err: any) {
+    console.error('Verification error:', err);
+    
+    const serverMessage = err.response?.data?.message;
+    errorMsg.value = serverMessage ? `❌ ${serverMessage}` : '❌ Verification error occured.';
   } finally {
     loading.value = false;
   }
@@ -79,17 +85,23 @@ const verifyCheque = async () => {
 const settleCheque = async () => {
   if (!cheque.value) return;
   loading.value = true;
+  resultMsg.value = '';
+  errorMsg.value = '';
+  
   try {
     const res = await http.post(`/clearing/settle?chequeId=${cheque.value.id}`);
-    if (res.data.settled) {
-      resultMsg.value = '✅ Cheque redeemed successfully!';
-      errorMsg.value = '';
+    
+    if (res.data.success) {
+      resultMsg.value = `✅ ${res.data.message || 'Cheque redeemed successfully!'}`;
       cheque.value.status = 'Settled';
     } else {
-      errorMsg.value = '❌ Redemption failed';
+      errorMsg.value = `❌ ${res.data.message || 'Redemption failed'}`;
     }
-  } catch {
-    errorMsg.value = '❌ Redemption error';
+  } catch (err: any) {
+    console.error('Redemption error:', err);
+    
+    const serverMessage = err.response?.data?.message;
+    errorMsg.value = serverMessage ? `❌ ${serverMessage}` : '❌ Redemption error occured.';
   } finally {
     loading.value = false;
   }
