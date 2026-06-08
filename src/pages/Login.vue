@@ -1,15 +1,53 @@
 <template>
   <BaseCard>
-    <form @submit.prevent="handleLogin">
-      <input v-model="form.username" type="text" class="form-control mb-3" placeholder="Username" required>
-      <input v-model="form.password" type="password" class="form-control mb-3" placeholder="Password" required>
-      <button type="submit" class="btn btn-primary w-100" :disabled="loading">Login</button>
+    <form @submit.prevent="handleLogin" class="space-y-4 text-start">
+      <input 
+        v-model="form.username" 
+        type="text" 
+        placeholder="Username" 
+        required
+        class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400
+                 focus:outline-none focus:border-indigo-200 focus:ring-4 focus:ring-indigo-500/10 
+                 shadow-sm focus:shadow-indigo-500/10 transition duration-200" 
+      >
+      <input 
+        v-model="form.password" 
+        type="password" 
+        placeholder="Password" 
+        required
+        class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400
+                 focus:outline-none focus:border-indigo-200 focus:ring-4 focus:ring-indigo-500/10 
+                 shadow-sm focus:shadow-indigo-500/10 transition duration-200"
+      >
+      <button 
+        type="submit" 
+        :disabled="loading"
+        class="w-full bg-linear-to-r from-indigo-500 to-blue-500 hover:from-indigo-700 hover:to-blue-700 
+               text-white font-medium py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg
+               focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2
+               disabled:opacity-60 disabled:cursor-not-allowed
+               transition duration-200 mt-2" 
+      >
+        Login
+      </button>
     </form>
-    <div class="text-center mt-3">
-      <router-link to="/register">Sign Up</router-link>
-      <p class="text-warning mt-2">Join now and claim your £5,000 bonus🎉</p>
+    <div class="text-center mt-4 space-y-3">
+      <router-link 
+        to="/register"
+        class="text-sm font-medium text-indigo-600 hover:text-indigo-500 underline underline-offset-4 transition"
+        >
+        Don't have an account? Sign Up
+      </router-link>
+      <p class="text-sm font-medium text-yellow-500 mt-2">
+        Join now and claim your £5,000 bonus🎉
+      </p>
     </div>
-    <div v-if="errorMsg" class="text-danger text-center mt-2">{{ errorMsg }}</div>
+    <div 
+      v-if="errorMsg"
+      class="mt-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg text-center font-medium animate-pulse"
+    >
+      {{ errorMsg }}
+    </div>
   </BaseCard>
 </template>
 

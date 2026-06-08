@@ -1,43 +1,146 @@
 <template>
   <BaseCard :showLogo="false">
-    <h5 class="text-center fw-bold mb-3">Split Cheque</h5>
+    <h5 class="text-center text-xl font-bold text-gray-800 mb-6">Split Cheque</h5>
 
-    <div id="reader" class="mb-3" v-show="!cheque"></div>
+    <div 
+      v-show="!cheque"
+      id="reader" 
+      class="w-full bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden shadow-inner text-center [&_img]:mx-auto [&_video]:mx-auto p-4 mb-5"
+    ></div>
 
-    <ChequeInfo v-if="cheque" title="Original Cheque" :cheque="cheque">
-      <div class="mt-3" v-if="!newCheques.length">
-        <label class="form-label">Split Amounts (comma separated)</label>
-        <input v-model="splitAmountsInput" type="text" class="form-control" placeholder="e.g. 1000, 1000">
-        <div class="d-grid gap-2 mt-3">
-          <button class="btn btn-primary" @click="splitCheque" :disabled="loading">Split Cheque</button>
+    <ChequeInfo 
+      v-if="cheque" 
+      title="Original Cheque" 
+      :cheque="cheque"
+    >
+      <div 
+        v-if="!newCheques.length" 
+        class="mt-5 space-y-3 text-start"
+      >
+        <label class="block text-sm font-medium text-gray-700">
+          Split Amounts (comma separated)
+        </label>
+        
+        <input 
+          v-model="splitAmountsInput" 
+          type="text" 
+          placeholder="e.g. 1000, 1000"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 font-mono
+                 focus:outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/10 shadow-sm focus:shadow-indigo-500/10
+                 transition duration-200"
+        >
+        
+        <div class="grid grid-cols-1 gap-3 pt-2">
+          <button 
+            type="button"
+            :disabled="loading"
+            @click="splitCheque"
+            class="w-full bg-linear-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 
+                   text-white font-medium py-2.5 px-4 rounded-xl shadow-md hover:shadow-lg
+                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+                   disabled:opacity-60 disabled:cursor-not-allowed
+                   transition duration-200 text-sm"
+          >
+            Split Cheque
+          </button>
         </div>
       </div>
     </ChequeInfo>
 
-    <div v-if="newCheques.length > 0" class="mt-4">
-      <h6>New Cheques</h6>
-      <div class="row">
-        <div v-for="c in newCheques" :key="c.id" class="col-md-6 mb-3">
-          <div class="card p-2">
-            <p class="mb-1"><b>ID:</b> <span class="small">{{ c.id }}</span></p>
-            <p class="mb-1"><b>Amount:</b> £{{ c.amount }}</p>
-            <img v-if="c.qrCodeBase64" :src="`data:image/png;base64,${c.qrCodeBase64}`" class="qr-preview w-100 mb-2"/>
-            <div class="d-grid gap-2">
-              <a class="btn btn-sm btn-outline-success" :download="`cheque-${c.id}.png`" :href="`data:image/png;base64,${c.qrCodeBase64}`">Download QR</a>
-              <button class="btn btn-sm btn-outline-primary" @click="sendEmailForSplit(c.id)">Send Email</button>
-            </div>
-            <div :id="`emailMsg-${c.id}`" class="mt-2 small text-center"></div>
+    <div 
+      v-if="newCheques.length > 0" 
+      class="mt-6 text-start"
+    >
+      <h6 class="text-sm font-bold text-gray-700 mb-3 flex items-center gap-1.5">
+        New Cheques
+      </h6>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div 
+          v-for="c in newCheques" 
+          :key="c.id"
+          class="bg-white border-2 border-dashed border-gray-200 rounded-2xl p-4 shadow-sm flex flex-col justify-between"
+        >
+          <div class="space-y-1.5 text-xs text-gray-600 mb-3">
+            <p class="flex flex-col">
+              <span class="font-medium text-gray-400">ID</span>
+              <span class="font-semibold text-gray-900 font-mono break-all select-all">{{ c.id }}</span>
+            </p>
+            <p class="flex justify-between items-end pt-1 border-t border-gray-100">
+              <span class="font-medium text-gray-400">Amount</span>
+              <span class="font-bold text-emerald-600 font-mono text-sm">£{{ c.amount }}</span>
+            </p>
           </div>
+
+          <div 
+            v-if="c.qrCodeBase64" 
+            class="bg-gray-50 border border-gray-100 rounded-xl p-2 mb-3 flex justify-center shadow-inner"
+          >
+            <img 
+              :src="`data:image/png;base64,${c.qrCodeBase64}`" 
+              alt="QR Code"
+              class="w-full max-w-[130px] h-auto"
+            />
+          </div>
+
+          <div class="grid grid-cols-1 gap-2">
+            <a 
+              :download="`cheque-${c.id}.png`" 
+              :href="`data:image/png;base64,${c.qrCodeBase64}`"
+              class="w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-1.5 px-3 rounded-xl text-xs transition"
+            >
+              Download QR
+            </a>
+            
+            <button 
+              type="button"
+              @click="sendEmailForSplit(c.id)"
+              class="w-full bg-white border border-gray-200 hover:border-indigo-200 text-gray-600 hover:text-indigo-600 font-medium py-1.5 px-3 rounded-xl text-xs transition hover:bg-indigo-50/30"
+            >
+              Send Email
+            </button>
+          </div>
+
+          <div 
+            :id="`emailMsg-${c.id}`" 
+            class="mt-2 text-center text-[11px] font-medium text-gray-500 min-h-[16px]"
+          ></div>
         </div>
       </div>
     </div>
 
-    <div v-if="resultMsg" class="mt-3 text-center text-success">{{ resultMsg }}</div>
-    <div v-if="errorMsg" class="mt-3 text-center text-danger">{{ errorMsg }}</div>
+    <div 
+      v-if="resultMsg" 
+      class="mt-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl text-center font-medium"
+    >
+      {{ resultMsg }}
+    </div>
 
-    <div class="d-grid gap-2 mt-4">
-      <button class="btn btn-outline-primary" @click="router.push('/')">Back to Dashboard</button>
-      <button class="btn btn-danger" @click="authStore.logout()">Logout</button>
+    <div 
+      v-if="errorMsg" 
+      class="mt-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl text-center font-medium"
+    >
+      {{ errorMsg }}
+    </div>
+
+    <div class="grid grid-cols-1 gap-3 mt-6 border-t border-gray-100 pt-4">
+      <button 
+        @click="router.push('/')"
+        class="w-full bg-white border border-gray-200 hover:border-indigo-200 text-gray-700 hover:text-indigo-600 font-medium py-2.5 px-4 rounded-xl shadow-sm hover:bg-indigo-50/30
+               focus:outline-none focus:ring-4 focus:ring-indigo-500/5
+               transition duration-200 text-sm"
+      >
+        Back to Dashboard
+      </button>
+      
+      <button 
+        @click="authStore.logout()"
+        class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-medium py-2.5 px-4 rounded-xl
+               focus:outline-none focus:ring-4 focus:ring-red-500/10
+               transition duration-200 text-sm"
+      >
+        Logout
+      </button>
     </div>
   </BaseCard>
 </template>

@@ -1,17 +1,19 @@
-body {
+@import "tailwindcss";
+
+/* body {
     background-color: #f5f7fa;
     margin: 0;
-}
+} */
 
-#app {
+/* #app {
     width: 100%;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-}
+} */
 
-.card {
+/* .card {
     width: 100%;
     max-width: 500px;
     padding: 20px;
@@ -32,10 +34,10 @@ body {
     font-family: "Anton", sans-serif;
     font-weight: 400;
     font-style: normal;
-}
+} */
 
 
-.balance {
+/* .balance {
     font-size: 2rem;
     font-weight: bold;
     margin: 20px 0;
@@ -44,9 +46,9 @@ body {
 
 .btn-block {
     margin-bottom: 10px;
-}
+} */
 
-.spinner-border {
+/* .spinner-border {
     width: 1.5rem;
     height: 1.5rem;
     margin-left: 8px;
@@ -60,9 +62,9 @@ body {
 .profile-item strong {
     display: inline-block;
     width: 120px;
-}
+} */
 
-.qr-preview {
+/* .qr-preview {
     max-width: 200px;
     margin: 10px auto;
     display: block;
@@ -75,8 +77,8 @@ body {
 
 #qrCode img {
     max-width: 250px;
-}
+} */
 
-#reader {
+/* #reader {
     width: 100%;
-}
+} */
